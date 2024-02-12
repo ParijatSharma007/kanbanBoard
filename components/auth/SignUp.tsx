@@ -6,6 +6,8 @@ import Link from "next/link";
 import { createUser } from "@/apiCalls/fireBase";
 import { useState } from 'react';
 import Spinner from '../loader/Spinner';
+import ErrorDialog from '../dialog/dialog';
+import { error } from 'console';
 
 interface DefaultValues{
     email : string,
@@ -16,6 +18,7 @@ interface DefaultValues{
 const SignUpForm = () => {
   const [loader, setLoader] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
   const router = useRouter()
   const defaultValues = {
         email : "",
@@ -33,12 +36,13 @@ const SignUpForm = () => {
 
     const submitHandler = async(data : DefaultValues) => {
       setLoader(true)
-      const{error} = await createUser(data)
+      const{error : fireBaseError, message} = await createUser(data)
       setLoader(false)
-      if(!error){
+      if(!fireBaseError){
         router.push('/')
       }else{
         setIsError(true)
+        setError(message)
       }
     }
     
@@ -47,6 +51,7 @@ const SignUpForm = () => {
          <div className={style.body}>
          <div className={style.background} />
          {!loader ? <div className={style.login_container}>
+         <ErrorDialog open={isError} handleClose={() => setIsError(false)} error={error}/>
            <div className={style.login_header}>
              <p>Crate New Account</p>
            </div>

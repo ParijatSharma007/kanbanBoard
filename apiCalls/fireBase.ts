@@ -24,12 +24,13 @@ export const createUser = async(data : {email : string, password : string, fulln
         
         return{
             success : true,
-            error : false
+            error : false,
         }
     }catch(err : any){
         console.log(err);
         return {
-            error : true
+            error : true,
+            message : err.message
         }
     }
 }

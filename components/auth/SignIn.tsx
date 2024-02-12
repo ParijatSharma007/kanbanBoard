@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import { verifyUser } from '@/apiCalls/fireBase'
 import Spinner from '../loader/Spinner'
+import ErrorDialog from '../dialog/dialog'
 
 interface DefaultValues{
     email : string,
@@ -15,6 +16,7 @@ const SignInForm = () => {
 
   const[loader, setLoader] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
 
   const router = useRouter()
       const auth = window.localStorage.getItem("UID")
@@ -32,17 +34,23 @@ const SignInForm = () => {
     const {register, handleSubmit} = useForm<DefaultValues>({defaultValues})
 
     const submitHandler = async(data : DefaultValues) => {
-      const {error} = await verifyUser(data)
+      setLoader(true)
+      const {error, message} = await verifyUser(data)
+      setLoader(false)
       if(!error){
         router.push('/')
       }else{
-        setIsError(false)
+        console.log(message);
+        
+        setIsError(true)
+        setError(message)
       }
     }
 
   return (  
     <div className={style.body}>
       <div className={style.background} />
+      <ErrorDialog open={isError} handleClose={() => setIsError(false)} error={error}/>
         {loader? <Spinner size={230}/> : <div className={style.login_container}>
           <div className={style.login_header}>
              <p>Login to your account</p>
