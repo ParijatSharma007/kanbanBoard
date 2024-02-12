@@ -12,6 +12,7 @@ import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebase.config'
 import { useRouter } from 'next/router'
 
+
 const KanbanBoard= () => {
   const router = useRouter()
   const [todo, setTodo] = useState<DndState>({
@@ -70,7 +71,7 @@ const KanbanBoard= () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box display={"flex"} flexDirection={"column"}>
+      <Box sx={{display:'flex'}} flex={4}>
         <Box
           sx={{
             "& .MuiInputBase-root": {
@@ -121,7 +122,7 @@ const KanbanBoard= () => {
             ))}
           </DashBoards>
         </Box>
-        <Box>
+        <Box flex={4}>
           <PendingTaskAdder
             passingUserinput={(value) =>
               setTodo({ ...todo, pending: [...todo.pending, value] })

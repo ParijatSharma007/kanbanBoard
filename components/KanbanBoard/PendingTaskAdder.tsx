@@ -28,12 +28,12 @@ const addTask =() => {
   return (
     <Box 
     display={'flex'}
-    flexDirection={'column'}
     sx={{
-        justifyContent : "center",
-        alignItems : 'center'
-    }}>
+      padding:"350px 30px"
+    }}
+    flexDirection={'column'}>
         <TextField
+        sx={{border:"1px solid #000", borderRadius:"10px"}}
           onChange={onChangeHandler}
           value={userInput}
         />
@@ -41,8 +41,10 @@ const addTask =() => {
         onClick={addTask}
         sx={{
             '& .MuiInputBase-root' : {
-                height : "300px"
-            }
+                height : "20px",
+                
+            },
+            
         }}
         >ADD TASK</Button>
 

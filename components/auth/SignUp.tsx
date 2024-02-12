@@ -1,5 +1,6 @@
 // import { firebaseAuth } from "@/firebase/firebaseConfig";
 import { firebaseInitializer } from "@/firebase.config";
+import style from '../../styles/auth.module.css'
 import { db } from "@/firebase.config";
 import { updateUserData } from "@/redux/userData";
 import { IUsersData } from "@/typescript/interfaces/dnd-interfaces";
@@ -8,6 +9,7 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 interface DefaultValues{
     email : string,
@@ -62,12 +64,32 @@ const SignUpForm = () => {
     }
     
     return (
-      <form onSubmit={handleSubmit(submitHandler)}>
-        <input {...register("fullname")} placeholder="FULLNAME" type="text"/>
-        <input {...register("email")} placeholder="EMAIL" type="email"/>
-        <input {...register("password")} placeholder="PASSWORD" type="password"/>
-        <button>SUBMIT</button>
-      </form>
+   
+         <body className={style.body}>
+         <div className={style.background} />
+         <div className={style.login_container}>
+           <div className={style.login_header}>
+             <p>Login to your account</p>
+           </div>
+           <div className={style.login_form}>
+             <form onSubmit={handleSubmit(submitHandler)}>
+               <div className={style.input_group}>
+               <input {...register("fullname")} placeholder="FULLNAME" type="text" className={style.input}/>
+               </div>
+               <div className={style.input_group}>
+               <input {...register("email")} placeholder="EMAIL" type="email" className={style.input}/>
+               </div>
+               <div className={style.input_group}>
+               <input {...register("password")} placeholder="PASSWORD" type="password" className={style.input}/>
+               </div>
+               <button className={style.button} type="submit">Login</button>
+             </form>
+           </div>
+           <div className={style.signup_link}>
+             Don't have an account? <Link href="/signin">Sign In</Link>
+           </div>
+         </div>
+       </body>
     );
 }
 

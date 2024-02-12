@@ -1,4 +1,5 @@
 import { db, firebaseInitializer } from '@/firebase.config'
+import style from '../../styles/auth.module.css'
 import { updateUserData } from '@/redux/userData'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
@@ -6,6 +7,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import Link from 'next/link'
 
 interface DefaultValues{
     email : string,
@@ -50,11 +52,31 @@ const SignInForm = () => {
     }
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
-      <input {...register("email")} type="email" placeholder="EMAIL" />
-      <input {...register("password")} type="password" placeholder="PASSWORD" />
-      <button>SUBMIT</button>
-    </form>
+    
+    <body className={style.body}>
+  <div className={style.background} />
+  <div className={style.login_container}>
+    <div className={style.login_header}>
+      <p>Login to your account</p>
+    </div>
+    <div className={style.login_form}>
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <div className={style.input_group}>
+          <input {...register("email")} type="email" placeholder="EMAIL" className={style.input}/>
+        </div>
+        <div className={style.input_group}>
+          <input {...register("password")} type="password" placeholder="PASSWORD" className={style.input}/>
+        </div>
+        <button className={style.button} type="submit">Login</button>
+      </form>
+    </div>
+    <div className={style.signup_link}>
+      Don't have an account? <Link href="/signup">Sign Up</Link>
+    </div>
+  </div>
+</body>
+
+
   );
 }
 
