@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, TextField, Button } from '@mui/material'
 
 interface ItextField {
-    passingUserinput : (e :string) => void
+    passingUserinput : (e :string) => void,
 }
 
 const PendingTaskAdder = ({passingUserinput} : ItextField) => {
@@ -17,23 +17,29 @@ const PendingTaskAdder = ({passingUserinput} : ItextField) => {
     }
     setUserInput(e.target.value)
   }
-const a  = null;
-const b = Number(a)
+  
 const addTask =() => {
     passingUserinput(userInput)
     setUserInput("")
     setBtnDisabled(false)
-}
+  }
 
   return (
-    <Box 
-    display={'flex'}
-    sx={{
-      padding:"350px 30px"
-    }}
+    <Box
     flexDirection={'column'}>
         <TextField
-        sx={{border:"1px solid #000", borderRadius:"10px"}}
+        sx={{
+          border:"1px solid #000",
+          borderRadius:"10px",
+          "& .MuiInputBase-root" : {
+            height : "150px",
+            width : "200px",
+            bottom : "50"
+          },
+          position : 'relative',
+        
+          
+        }}
           onChange={onChangeHandler}
           value={userInput}
         />

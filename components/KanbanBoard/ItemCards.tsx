@@ -1,9 +1,9 @@
 import React from 'react'
-import { Typography, Box } from '@mui/material'
-import { Draggable, DraggableProvided } from '@hello-pangea/dnd'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from '@mui/material'
+import { Draggable } from '@hello-pangea/dnd'
+
 interface IItemCards {
-    children : string | JSX.Element | JSX.Element[]
+    children : (JSX.Element|string)[] | JSX.Element | string
     dragableId : string
     index : number
 }
@@ -25,15 +25,12 @@ const ItemCards = ({children, ...props} : IItemCards) => {
             margin: "9px",
             backgroundColor: "white",
             overflow :"auto",
+            opacity : '0.8'
           }}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-        >
-          <Box>
-          <DeleteIcon sx={{color:"red", padding:"0px 200px"}}/>
-          </Box>
-          <Typography>{children}</Typography>
+        >{children}
         </Box>
       )}
     </Draggable>

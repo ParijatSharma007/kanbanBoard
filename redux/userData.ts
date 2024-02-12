@@ -19,7 +19,7 @@ const UserDataSlice = createSlice({
         updateUserData(state, acion){
             console.log("action", acion.payload);
             state = acion.payload
-            console.log("userUpdated : ", state);
+            console.log("userUpdated : ", state, acion.payload);
         },
         updateTodo(state, acion){
             state = {

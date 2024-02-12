@@ -1,14 +1,16 @@
 import { Droppable } from '@hello-pangea/dnd'
-import { Container, Box } from '@mui/material'
+import { Container, Box, Typography } from '@mui/material'
 import React from 'react'
 
 interface Children {
     children : JSX.Element | JSX.Element[] | null | undefined
     borderColor : string
     droppableId : string
+    title : string,
+    backgroundColor : string
 }
 
-const DashBoards = ({children, borderColor, ...props} : Children) => {
+const DashBoards = ({children, borderColor,backgroundColor, ...props} : Children) => {
   return (
       <Droppable droppableId={props.droppableId}>
         {(provided, snapshot) => (
@@ -24,8 +26,10 @@ const DashBoards = ({children, borderColor, ...props} : Children) => {
             display : "block",
             borderWidth : '3px',
             borderColor : {borderColor},
-            
+            backgroundColor : {backgroundColor}
         }}>
+          <Typography variant='h5' sx={{textAlign : 'center'}}>{props.title}</Typography>
+          <hr/>
             <Box>
                 {children}
             </Box>

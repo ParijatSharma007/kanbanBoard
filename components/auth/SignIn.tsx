@@ -1,13 +1,10 @@
-import { db, firebaseInitializer } from '@/firebase.config'
 import style from '../../styles/auth.module.css'
-import { updateUserData } from '@/redux/userData'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import Link from 'next/link'
+import { verifyUser } from '@/apiCalls/fireBase'
+import Spinner from '../loader/Spinner'
 
 interface DefaultValues{
     email : string,
@@ -16,9 +13,13 @@ interface DefaultValues{
 
 const SignInForm = () => {
 
+  const[loader, setLoader] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
+
   const router = useRouter()
-  const dispatch = useDispatch()
-      const auth = window.localStorage.getItem('UID')
+      const auth = window.localStorage.getItem("UID")
+
+      console.log(auth,"auth")
       if(auth){
         router.push("/")
       }
@@ -31,35 +32,22 @@ const SignInForm = () => {
     const {register, handleSubmit} = useForm<DefaultValues>({defaultValues})
 
     const submitHandler = async(data : DefaultValues) => {
-        try{
-            const auth = getAuth(firebaseInitializer)
-            const {user} = await signInWithEmailAndPassword(auth, data.email, data.password)
-            const userDocRef = doc(db, "users", user.uid)
-            const userDocSnap = await getDoc(userDocRef)
-
-            if(userDocSnap.exists()){
-              dispatch(updateUserData({...userDocSnap.data(), uid: user.uid}))
-            }else{
-              router.push('/signup', "", {shallow : true})
-            }
-
-              window.localStorage.setItem("UID", user.uid)
-
-            router.push('/', "", {shallow : true})
-        }catch(err){
-            console.log(err);
-        }
+      const {error} = await verifyUser(data)
+      if(!error){
+        router.push('/')
+      }else{
+        setIsError(false)
+      }
     }
 
-  return (
-    
-    <body className={style.body}>
-  <div className={style.background} />
-  <div className={style.login_container}>
-    <div className={style.login_header}>
-      <p>Login to your account</p>
-    </div>
-    <div className={style.login_form}>
+  return (  
+    <div className={style.body}>
+      <div className={style.background} />
+        {loader? <Spinner size={230}/> : <div className={style.login_container}>
+          <div className={style.login_header}>
+             <p>Login to your account</p>
+          </div>
+        <div className={style.login_form}>
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className={style.input_group}>
           <input {...register("email")} type="email" placeholder="EMAIL" className={style.input}/>
@@ -71,10 +59,11 @@ const SignInForm = () => {
       </form>
     </div>
     <div className={style.signup_link}>
-      Don't have an account? <Link href="/signup">Sign Up</Link>
+      {"Don't have an account? "}
+      <Link href="/signup">Sign Up</Link>
     </div>
-  </div>
-</body>
+  </div>}
+</div>
 
 
   );
